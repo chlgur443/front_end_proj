@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최혁 | 개발자 포트폴리오</title>
+    <style>
+    /* 1. 부드러운 스크롤 효과 및 속도 설정 */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* 기본 리셋 및 폰트 설정 */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #212529; /* 전체 배경색 (좌우 여백) */
+        color: #343a40; 
+        line-height: 1.6;
+    }
+
+    /* 헤더 (네비게이션) 스타일 */
+    header {
+        background-color: #212529; /* 헤더 배경색 */
+        color: white;
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 버튼 수직 정렬 */
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: background-color 0.3s;
+        cursor: pointer;
+    }
+
+    nav a:hover {
+        background-color: #343a40;
+        border-radius: 5px;
+    }
+    
+    /* 출력 버튼 전용 스타일 */
+    #print-btn {
+        background-color: #007bff;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+    #print-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* 2. 섹션 공통 스타일 - 높이 조절 및 색상 통일 (흰색) */
+    section {
+        min-height: 100vh; 
+        padding: 80px 5%;
+        margin: 0 auto;
+        max-width: 1200px;
+        background-color: #ffffff; 
+        margin-top: 40px; /* 섹션 간 간격 */
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 50px;
+        font-size: 2.2em;
+        border-bottom: 3px solid #ffc107;
+        display: inline-block;
+        padding-bottom: 8px;
+    }
+
+   /* 홈 섹션 스타일 - 배경색 어두운 계열 (차콜 블랙) */
+   #home {
+        min-height: 100vh;
+        text-align: center;
+        background-color: #212529; /* 헤더와 동일 */
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        margin-top: 0;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* 홈 섹션 텍스트 색상 보정 */
+    #home h1 {
+        color: #f8f9fa;
+        font-size: 3.5em;
+        margin-bottom: 10px;
+    }
+
+    #home p {
+        font-size: 1.4em;
+        color: #adb5bd;
+    }
+
+    /* 포트폴리오 프로젝트 스타일 */
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .project-item {
+        border: 1px solid #dee2e6;
+        padding: 25px;
+        border-radius: 8px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+
+    .project-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .project-item h3 {
+        color: #007bff;
+    }
+    
+    .project-item a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block; 
+        margin-right: 10px;
+    }
+
+    /* 푸터 스타일 */
+    footer {
+        width: 100%;
+        background-color: #1a1a1a; /* ⚡️ 헤더보다 더 짙은 색상으로 구분 */
+        color: white;
+        text-align: center;
+        padding: 25px 0;
+        margin-top: 80px; 
+        z-index: 1000; 
+    }
+    
+    footer h3 {
+        margin: 5px 0 10px 0;
+        font-size: 1.4em;
+        color: #ffc107; 
+    }
+    
+    footer p {
+        margin: 5px 0;
+        font-size: 1em;
+    }
+
+    footer .copyright {
+        margin-top: 15px;
+        font-size: 0.8em;
+        opacity: 0.6;
+    }
+    
+    /* 모달 스타일 */
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 2000; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; 
+        background-color: rgba(0, 0, 0, 0.8); 
+        backdrop-filter: blur(2px); 
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 800px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.2s ease-out; 
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateY(-30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* =========================================
+       [인쇄 전용 스타일] (@media print)
+       출력 버튼 클릭 시 적용되는 CSS입니다.
+       ========================================= */
+    @media print {
+        /* 숨길 요소들: 헤더, 푸터, 홈 섹션, 모달, 출력 버튼 */
+        header, footer, #home, .modal, #print-btn {
+            display: none !important;
+        }
+
+        /* 배경 및 텍스트 색상 강제 조정 (잉크 절약 및 가독성) */
+        body {
+            background-color: white !important;
+            color: black !important;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* 섹션 스타일 재정의 */
+        section {
+            box-shadow: none !important; /* 그림자 제거 */
+            margin: 0 !important;
+            padding: 20px 0 !important;
+            min-height: auto !important; /* 전체 화면 높이 해제 */
+            border: none !important;
+            page-break-inside: avoid; /* 섹션 중간에서 페이지 잘림 방지 노력 */
+        }
+        
+        /* 링크 URL이 출력되지 않도록 설정 (선택 사항) */
+        a {
+            text-decoration: none;
+            color: black !important;
+        }
+        
+        /* 섹션별로 페이지 넘김이 자연스럽게 */
+        section + section {
+            margin-top: 30px !important;
+            border-top: 1px solid #ddd !important;
+            padding-top: 30px !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#home">🏠 홈</a>
+            <a href="#about">🙋‍♂️ 자기소개서</a>
+            <a href="#resume">📜 이력서</a>
+            <a href="#portfolio">💻 포트폴리오</a>
+            <a id="print-btn">🖨️ 출력</a>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h1>안녕하세요, 최혁입니다.</h1>
+        <p>💡 문제 해결에 열정을 가진 IT 개발자입니다.</p>
+        </section>
+
+    <section id="about">
+        <h2 style="margin: 0 auto;">🙋‍♂️ 자기소개서 (About Me)</h2>
+	<h3>개발자로서의 비전과 가치관</h3>
+        <p>저는 끊임없이 배우고 성장하는 것을 중요하게 생각합니다.</p>
+        <h3>강점 및 협업 스타일</h3>
+        <p>저의 가장 큰 강점은 호기심 입니다. 호기심이 있기에 다양한 것을 끊임 없이 배워 저의 역량이 정체되는 것이 아닌 느리더라도 끊임 없이 성장할 수 있는것 입니다.</p>
+        <h3>기술 스택 요약</h3>
+        <p>
+		학력 : 대진디자인고등학교 소프트웨어콘텐츠과 졸업, 인하공업전문대학교 전문학사 취득<br>
+		사용 가능 언어 : java, C#, C++, python, mySQL, HTML, javaScript<br>
+		보유 자격증 : <br>
+	</p>
+    </section>
+
+    <section id="resume">
+        <h2 style="margin: 0 auto;">📜 이력서 (Resume)</h2>
+
+        <h3>경력 및 프로젝트 요약</h3>
+        <div>
+            <h4>[인하공업전문대학교 S/W프로젝트 / Kinect Sensor기반 영단어 학습] (2024.08.26 ~ 2024.12.06)</h4>
+            <p><strong>역할 : </strong> Kinect Sensor 제어 | <strong>기여도 :</strong> 25%</p>
+            <p>주요 업무/성과 : 키네트 센서를 통해 joint를 추적하고 지속적으로 내려오는 영단어와 손이 접촉했을때 이벤트를 활성화하는 작업</p>
+        </div>
+        <hr>
+        <div>
+            <h4>[인하공업전문대학교 시스템 분석설계 / 구단 관리 프로그램] (2024.08.26 ~ 2024.12.06)</h4>
+            <p><strong>역할 : </strong> 선수단 관리 구현 | <strong>기여도 : </strong> 25%</p>
+            <p>주요 업무/성과 : 선수 추가/제거, 선수 세부정보 수정/열람 구현</p>
+        </div>
+	<hr>
+	<div>
+            <h4>[인하공업전문대학교 모바일 프로그래밍/ 위치저장 프로그램] (2025.03.04 ~ 2025.06.20)</h4>
+            <p><strong>역할 : </strong> 터치를 통해 위치 매핑/제거 | <strong>기여도 :</strong> 25%</p>
+            <p>주요 업무/성과 : 터치를 통해 원하는 위치를 저장/제거 구현</p>
+        </div>
+        <hr>
+        <h3>기술 스택</h3>
+        <ul>
+            <li>**주력 언어/프레임워크:** Java, C#</li>
+            <li>**데이터베이스:** MySQL</li>
+            <li>**도구/기타:** Git, AWS</li>
+        </ul>
+    </section>
+
+    <section id="portfolio">
+        <h2 style="margin: 0 auto;">💻 포트폴리오 (Projects)</h2>
+        <div class="project-grid">
+
+            <div class="project-item">
+                <h3>프로젝트 A : Kinect Sensor기반 영단어 학습</h3>
+                <p><strong>기간 : </strong>2024.08.26 ~ 2024.12.06</p>
+                <p><strong>기술 스택:</strong> C#, WPF, Kinect SDK</p>
+                <p><strong>주요 기능:</strong> 관절 추적, 단어 접촉 이벤트, 게임화된 학습</p>
+                </div>
+
+            <div class="project-item">
+                <h3>프로젝트 B : 구단 관리 프로그램</h3>
+                <p><strong>기간 : </strong>2024.08.26 ~ 2024.12.06</p>
+                <p><strong>기술 스택:</strong> Java, WinForms, MySQL</p>
+                <p><strong>주요 기능:</strong> 선수 데이터 CRUD, 사용자 친화적 UI</p>
+                </div>
+	   <div class="project-item">
+                <h3>프로젝트 C : 위치저장 프로그램</h3>
+                <p><strong>기간 : </strong>2025.03.26 ~ 2025.6.20</p>
+                <p><strong>기술 스택:</strong> Java</p>
+                <p><strong>주요 기능:</strong> 위치 정보 CRUD</p>
+                </div>
+		
+            </div>
+    </section>
+
+    <footer id="contact-footer">
+        <h3>📞 연락처</h3>
+        <p>이메일 : chlgur443@naver.com</p>
+        <p>GitHub : https://github.com/chlgur443</p>
+        <p class="copyright">&copy; 2025 최혁. All Rights Reserved.</p>
+    </footer>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalTitle">프로젝트 제목</h3>
+            <p id="modalDuration">기간: </p>
+            <p id="modalTechStack">기술 스택: </p>
+            <hr>
+            <h4>프로젝트 상세 설명</h4>
+            <p id="modalDescription">여기에 프로젝트의 상세 내용이 들어갑니다. 문제 해결 과정, 본인의 역할, 배운 점 등을 자세히 기술하세요.</p>
+            </div>
+    </div>
+
+    <script>
+        // --- 1. 스크롤 애니메이션 기능 ---
+        const navLinks = document.querySelectorAll('nav a:not(#print-btn)'); // 출력 버튼 제외하고 스크롤 이벤트 적용
+        const SCROLL_DURATION = 500; 
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                const targetId = this.getAttribute('href'); 
+                const targetElement = document.querySelector(targetId); 
+                
+                if (targetElement) {
+                    const targetPosition = targetElement.getBoundingClientRect().top;
+                    const startPosition = window.pageYOffset; 
+                    const distance = targetPosition; 
+                    let startTime = null;
+
+                    function animation(currentTime) {
+                        if (startTime === null) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        
+                        const run = easeInOutQuad(timeElapsed, startPosition, distance, SCROLL_DURATION);
+                        window.scrollTo(0, run);
+                        if (timeElapsed < SCROLL_DURATION) requestAnimationFrame(animation);
+                    }
+                    function easeInOutQuad(t, b, c, d) {
+                        t /= d/2;
+                        if (t < 1) return c/2*t*t + b;
+                        t--;
+                        return -c/2 * (t*(t-2) - 1) + b;
+                    }
+                    requestAnimationFrame(animation);
+                }
+            });
+        });
+        
+        // --- 2. 페이지 로드 시 홈 섹션 중앙 보정 ---
+        window.addEventListener('load', function() {
+            const homeSection = document.getElementById('home');
+            if (homeSection) {
+                const homeCenter = homeSection.offsetTop + (homeSection.offsetHeight / 2);
+                const viewportCenter = window.innerHeight / 2;
+                const targetScroll = homeCenter - viewportCenter;
+                window.scrollTo(0, targetScroll);
+            }
+        });
+
+        // --- 3. 출력 버튼 기능 추가 ---
+        const printBtn = document.getElementById('print-btn');
+        if (printBtn) {
+            printBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.print(); // 브라우저 인쇄 대화상자 호출
+            });
+        }
+        
+        // --- 4. 모달 기능 (수정된 로직) ---
+        
+        const modal = document.getElementById('projectModal');
+        const closeButton = document.querySelector('.close-button');
+        const projectItems = document.querySelectorAll('.project-item');
+        
+        // 닫기 버튼, 배경 클릭 시 모달 닫기
+        closeButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // 프로젝트 아이템 클릭 시 모달 열기
+        projectItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                
+                // 클릭된 요소가 a 태그라면 모달 열기를 방지하고 리턴합니다.
+                if (e.target.closest('a')) {
+                    return; 
+                }
+                
+                e.preventDefault(); 
+                
+                // 모달에 내용 채우기 (안전한 요소 선택자 사용)
+                const title = item.querySelector('h3').textContent;
+                
+                const paragraphs = item.querySelectorAll('p');
+                const duration = paragraphs[0] ? paragraphs[0].textContent.replace('기간 : ', '') : '정보 없음';
+                const techStack = paragraphs[1] ? paragraphs[1].textContent.replace('기술 스택:', '').trim() : '정보 없음';
+                
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalDuration').textContent = `기간: ${duration}`;
+                document.getElementById('modalTechStack').textContent = `기술 스택: ${techStack}`;
+                
+                // 상세 설명 내용 업데이트
+                if (title.includes('Kinect Sensor')) {
+                    document.getElementById('modalDescription').textContent = "Kinect Sensor기반 영단어 학습 프로젝트는 Windows Presentation Foundation(WPF) 환경에서 C#과 Kinect SDK를 사용하여 관절 추적 기능을 구현했습니다. 실시간으로 사용자의 손동작을 인식하고, 화면에 나타나는 단어와의 접촉을 이벤트로 처리하여 게임화된 학습 시스템을 개발했습니다.";
+                } else if (title.includes('구단 관리 프로그램')) {
+                    document.getElementById('modalDescription').textContent = "구단 관리 프로그램은 시스템 분석설계 과목에서 개발된 데스크톱 애플리케이션입니다. Java와 WinForms를 사용하여 선수 데이터베이스(MySQL)의 CRUD(Create, Read, Update, Delete) 기능을 구현했습니다. 데이터 무결성과 사용자 친화적인 UI 구성에 중점을 두었습니다.";
+                } else if (title.includes('위치저장 프로그램')) {
+                    document.getElementById('modalDescription').textContent = "위치저장 프로그램은 안드로이드 스튜디오를 이용해서 개발했습니다. Google Map을 사용하여 지도를 사용자에게 보여주고 원하는 위치를 터치하였을때 위치를 매핑할 수 있으며 이미 매핑된 위치를 다시 터치 하면 삭제 할 수 있습니다. 로그인 기능을 통해 위치정보를 실시간을 저장할 수 있습니다.";
+                } else {
+                    document.getElementById('modalDescription').textContent = "프로젝트 상세 설명을 이곳에 작성해주세요.";
+                }
+
+                // 모달 보이기
+                modal.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
